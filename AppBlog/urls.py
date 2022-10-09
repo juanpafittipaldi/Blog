@@ -1,4 +1,5 @@
 from django.urls import path
+<<<<<<< HEAD
 from . import views
 from .models import Posteo
 
@@ -13,3 +14,14 @@ urlpatterns = [
 ]
 
 
+=======
+from AppBlog.views import *
+from django.contrib.auth.views import LogoutView
+
+urlpatterns = [
+    path('login/', login_request, name="login"),
+    path("register/", register, name="register"),
+    path("logout/", LogoutView.as_view(template_name="AppBlog/logout.html"), name="Logout"),
+
+]
+>>>>>>> 590e3063093a3e4f85b7adfda9fc913212890b1c

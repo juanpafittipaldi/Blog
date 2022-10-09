@@ -16,5 +16,13 @@ class Posteo(models.Model):
         self.fecha_publicado = timezone.now()
         self.save()
 
+<<<<<<< HEAD
     def __str__(self):
         return self.titulo
+=======
+# Create your models here.
+class Blog(models.Model):
+    titulo=models.CharField(max_length=100)
+    subtitulo=models.CharField(max_length=100)
+    cuerpo=models.CharField(max_length=2000)
+>>>>>>> 590e3063093a3e4f85b7adfda9fc913212890b1c
