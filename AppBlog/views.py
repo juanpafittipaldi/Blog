@@ -4,6 +4,8 @@ from django.utils import timezone
 from .forms import PosteoForm
 from .models import Posteo
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 #Read
 def lista_posteos(request):
     posteos = Posteo.objects.filter(fecha_publicado__lte=timezone.now()).order_by('-fecha_creado')
@@ -36,13 +38,13 @@ def editar_posteo(request, pk):
     if request.method == "POST":
         form = PosteoForm(request.POST, request.FILES,instance=posteo)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.autor = request.user
-            post.save()
+            posteo = form.save(commit=False)
+            posteo.autor = request.user
+            posteo.save()
             return redirect('detalle_posteo', pk=posteo.pk)
     else:
-        form = PosteoForm(instance=posteo)
-    return render(request, 'html/editar_posteo.html', {'form': form})
+        form = PosteoForm(instance=posteo)  
+    return render(request, 'html/editar_posteo.html', {'form': form, 'posteo':posteo})
 
 @login_required
 #Read
@@ -53,8 +55,11 @@ def posteo_borradores(request):
 #Create
 def publicar_posteo(request, pk):
     posteo = get_object_or_404(Posteo, pk=pk)
-    posteo.publicar()
-    return redirect('lista_posteos')
+    if posteo.imagen_posteo: 
+        posteo.publicar()
+        return redirect('lista_posteos')
+    else: 
+        return editar_posteo(request, pk)
 @login_required
 #Delete
 def eliminar_posteo(request, pk):
